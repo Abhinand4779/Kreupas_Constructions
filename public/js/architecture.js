@@ -3,6 +3,36 @@ const hasGsap = window.gsap && window.ScrollTrigger && !prefersReducedMotion;
 
 document.body.classList.add("is-loading");
 
+function initMobileMenu() {
+  const menuToggle = document.querySelector(".menu-toggle");
+  const nav = document.querySelector(".nav");
+
+  if (!menuToggle || !nav) return;
+
+  menuToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    menuToggle.classList.toggle("active");
+    nav.classList.toggle("active");
+    menuToggle.setAttribute("aria-expanded", nav.classList.contains("active"));
+  });
+
+  nav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      menuToggle.classList.remove("active");
+      nav.classList.remove("active");
+      menuToggle.setAttribute("aria-expanded", false);
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".site-header")) {
+      menuToggle.classList.remove("active");
+      nav.classList.remove("active");
+      menuToggle.setAttribute("aria-expanded", false);
+    }
+  });
+}
+
 function splitText() {
   document.querySelectorAll(".split-text").forEach((element) => {
     const text = element.textContent.trim();
@@ -30,6 +60,7 @@ function initGsap() {
   gsap.registerPlugin(ScrollTrigger);
   document.documentElement.classList.add("gsap-ready");
   splitText();
+  initMobileMenu();
 
   const loader = gsap.timeline({
     defaults: { ease: "power4.out" },
@@ -182,6 +213,7 @@ function initTiltCards() {
 }
 
 window.addEventListener("load", () => {
+  initMobileMenu();
   if (hasGsap) {
     initGsap();
   } else {
