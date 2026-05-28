@@ -188,14 +188,14 @@ function initContactGsap() {
   });
 
   formTl
-    .from(".contact-form-container .section__kicker", { opacity: 0, x: -20, duration: 0.8 })
-    .from(".contact-title", { y: 40, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.6")
+    .from(".contact-form-container .section__kicker", { opacity: 0, x: -20, duration: 0.8, immediateRender: false })
+    .from(".contact-title", { y: 40, opacity: 0, duration: 1, ease: "power3.out", immediateRender: false }, "-=0.6")
     .from(".brief-step", { 
       y: 50, opacity: 0, duration: 0.8, 
-      stagger: 0.2, ease: "power3.out" 
+      stagger: 0.2, ease: "power3.out", immediateRender: false 
     }, "-=0.6")
-    .from(".commission-btn", { scale: 0.95, opacity: 0, duration: 0.8, ease: "back.out(1.5)" }, "-=0.4")
-    .from(".brief-footer-details", { opacity: 0, y: 20, duration: 0.8 }, "-=0.4");
+    .from(".commission-btn", { scale: 0.95, opacity: 0, duration: 0.8, ease: "back.out(1.5)", immediateRender: false }, "-=0.4")
+    .from(".brief-footer-details", { opacity: 0, y: 20, duration: 0.8, immediateRender: false }, "-=0.4");
 
   // ── Input Line Drawing Animation on Focus ──
   const inputs = document.querySelectorAll('.form-underline-group input, .form-underline-group textarea');

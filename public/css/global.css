@@ -26,6 +26,9 @@
   --radius: 4px;
   --ease-out: cubic-bezier(.2, .8, .2, 1);
   --ease-elastic: cubic-bezier(.68, -.55, .265, 1.55);
+  --loader-font: var(--sans);
+  --loader-color: #ffffff;
+  --loader-color-muted: rgba(255, 255, 255, 0.18);
 }
 
 /* ── Reset ── */
@@ -62,7 +65,7 @@ ul, ol { list-style: none; }
 .page-loader {
   position: fixed; inset: 0; z-index: 9999;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(160deg, #0a0a0a 0%, #1a1510 50%, #0a0a0a 100%);
+  background: #0d1114;
   transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
 }
 .loader-hiding .page-loader {
@@ -73,20 +76,23 @@ ul, ol { list-style: none; }
 }
 .loader-svg { width: 1400px; height: 200px; max-width: 95vw; }
 .loader-text {
-  font-family: var(--serif); font-size: 72px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
-  fill: transparent;
+  font-family: var(--loader-font); font-size: 72px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  fill: var(--loader-color);
   stroke-dasharray: 2500; stroke-dashoffset: 2500;
 }
 .loader-text--bg {
-  stroke: rgba(212, 167, 106, 0.12); stroke-width: 1px;
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 1px;
+  opacity: 0.35;
   animation: drawText 3s ease forwards;
 }
 .loader-text--fg {
-  stroke: #d4a76a; stroke-width: 1.5px;
+  stroke: var(--loader-color);
+  stroke-width: 1.5px;
   animation: drawText 2.5s 0.2s ease forwards, fillText 0.8s 2.5s ease forwards;
 }
 @keyframes drawText { 100% { stroke-dashoffset: 0; } }
-@keyframes fillText { 100% { fill: #ffffff; stroke-width: 0; } }
+@keyframes fillText { 100% { fill: var(--loader-color); stroke-width: 0; } }
 
 /* ── Scroll Progress ── */
 .progress { position: fixed; top: 0; left: 0; width: 0; height: 3px; background: linear-gradient(90deg, var(--clay), var(--gold)); z-index: 200; }

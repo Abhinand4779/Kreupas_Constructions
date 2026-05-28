@@ -23,6 +23,7 @@ function removeLoader() {
         loader.classList.add('hidden');
         document.body.classList.remove('is-loading');
         document.body.classList.remove('loader-hiding');
+        window.scrollTo(0, 0);
         
         initGlobal();
         window.dispatchEvent(new Event('loaderFinished'));
