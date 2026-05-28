@@ -260,10 +260,14 @@ img {
 
 .hero__media {
   transform: scale(1.08);
+  overflow: hidden;
+  will-change: transform;
 }
 
 .hero__media img {
   filter: saturate(.88) contrast(1.04);
+  transform-origin: center center;
+  transition: transform 14s ease, filter .8s ease;
 }
 
 .hero__scrim {
@@ -278,6 +282,18 @@ img {
   max-width: var(--max);
   margin: 0 auto;
   padding: clamp(124px, 16vh, 180px) var(--gutter) clamp(136px, 16vh, 160px);
+  will-change: transform, opacity;
+}
+
+.hero__title .split-line {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.hero__title .split-line > span {
+  display: inline-block;
+  transform: translateY(110%);
 }
 
 @media (max-width: 768px) {
@@ -308,18 +324,36 @@ img {
   flex: 0 0 auto;
   display: grid;
   place-items: center;
+  position: relative;
   width: 134px;
   aspect-ratio: 1;
   border: 1px solid rgba(255, 255, 255, .34);
   border-radius: 50%;
   font-size: 13px;
   font-weight: 800;
+  overflow: hidden;
   transition: background .3s ease, color .3s ease, transform .3s ease;
+}
+
+.circle-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .18), transparent 34%);
+  opacity: 0;
+  transform: scale(0.72);
+  transition: opacity .45s ease, transform .45s ease;
 }
 
 .circle-link:hover {
   color: var(--night);
   background: var(--paper);
+}
+
+.circle-link:hover::before {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .hero__stats {
@@ -509,6 +543,18 @@ img {
   color: white;
   background: var(--night);
   isolation: isolate;
+  transition: transform .55s ease, box-shadow .55s ease, background .55s ease;
+  transform-style: preserve-3d;
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 80px rgba(13, 17, 20, .22);
+}
+
+.project-card:hover .project-card__meta,
+.project-card:hover h3 {
+  transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
@@ -537,6 +583,12 @@ img {
   z-index: -2;
   transform: scale(1.06);
   transition: transform .8s cubic-bezier(.2, .8, .2, 1), filter .8s ease;
+  will-change: transform;
+}
+
+.project-card:hover img {
+  transform: scale(1.12);
+  filter: saturate(1.04);
 }
 
 .project-card::after {
@@ -595,6 +647,16 @@ img {
   min-height: 330px;
   padding: 34px;
   background: var(--paper);
+  transition: transform .45s ease, box-shadow .45s ease, background .45s ease;
+  opacity: 0;
+  transform: translateY(18px) scale(.985);
+  will-change: transform, opacity;
+}
+
+.service-list article:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(23, 21, 18, .12);
+  background: rgba(244, 240, 232, .95);
 }
 
 @media (max-width: 768px) {
@@ -761,6 +823,10 @@ img {
   width: min(100%, 980px);
   margin: 0 auto;
   padding: 0 var(--gutter);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .8s ease, transform .8s ease;
+  will-change: opacity, transform;
 }
 
 @media (max-width: 768px) {
@@ -845,6 +911,14 @@ img {
     display: none;
   }
 
+  .menu-toggle {
+    display: flex;
+  }
+
+  .header-cta {
+    display: none;
+  }
+
   .project-grid,
   .timeline {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -852,11 +926,11 @@ img {
 }
 
 .project-card,
-  .project-card--large,
-  .project-card--wide {
-    grid-column: span 1;
-    min-height: 560px;
-  }
+.project-card--large,
+.project-card--wide {
+  grid-column: span 1;
+  min-height: 560px;
+}
 
   .service-list {
     grid-template-columns: 1fr;
@@ -872,9 +946,9 @@ img {
   }
 
   .site-header {
-    width: calc(100% - 24px);
+    width: 100%;
     margin-top: 12px;
-    padding: 9px;
+    padding: 9px 16px;
   }
 
   .brand__text {
@@ -887,15 +961,16 @@ img {
   }
 
   .hero__content {
-    width: calc(100% - 28px);
+    width: 100%;
     padding: 120px 0 190px;
     padding-bottom: 172px;
   }
 
   .hero__title {
-     max-width: 1040px;
-    font-size: clamp(48px, 10.8vw, 178px);
-  overflow-wrap: break-word;
+    max-width: 100%;
+    font-size: clamp(40px, 10.8vw, 178px);
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .hero__bottom {

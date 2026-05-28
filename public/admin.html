@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | Kreupas Construction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- Login Screen -->
+  <div class="admin-login" id="adminLogin">
+    <div class="login-card">
+      <div style="width:56px;height:56px;margin:0 auto 20px;background:linear-gradient(135deg,var(--gold),var(--clay));display:grid;place-items:center;color:#fff;font-weight:800;font-size:16px;">KC</div>
+      <h1>Admin Panel</h1>
+      <p>Enter your password to manage your website content.</p>
+      <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
+      <input type="password" id="loginPassword" placeholder="Enter admin password" autocomplete="current-password">
+      <button class="btn btn--gold" onclick="attemptLogin()" style="width:100%;justify-content:center;"><span>Sign In</span></button>
+      <p style="margin-top:20px;font-size:12px;color:rgba(244,240,232,.3);">Default password: kreupas2026</p>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="adminDashboard" style="display:none;">
+    <header class="site-header" id="siteHeader">
+      <a class="brand" href="./index.html"><img src="./assets/LOGO_CLIENT-removebg-preview-300x300.webp" alt="Kreupas Construction Logo" class="brand__logo"></a>
+      <nav class="nav" id="mainNav" style="display:flex;">
+        <a href="./index.html" target="_blank">View Site ↗</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" style="display:none;"><span></span><span></span><span></span></button>
+      <button class="btn btn--ghost" onclick="adminLogout()" style="font-size:13px;padding:8px 20px;border:1px solid rgba(255,255,255,.15);color:rgba(244,240,232,.7);"><span>Logout</span></button>
+    </header>
+
+    <div class="admin-layout">
+      <!-- Sidebar -->
+      <aside class="admin-sidebar" id="adminSidebar">
+        <nav class="admin-sidebar__nav">
+          <a href="#" class="active" data-tab="dashboard" onclick="switchTab('dashboard',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Dashboard
+          </a>
+          <a href="#" data-tab="projects" onclick="switchTab('projects',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            Projects
+          </a>
+          <a href="#" data-tab="testimonials" onclick="switchTab('testimonials',this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            Testimonials
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="admin-main">
+        <!-- Dashboard Tab -->
+        <div id="tab-dashboard">
+          <h1 style="font-family:var(--serif);font-size:28px;margin-bottom:8px;">Welcome Back 👋</h1>
+          <p style="color:rgba(244,240,232,.5);margin-bottom:32px;">Manage your website content from here.</p>
+          <div class="admin-stats">
+            <div class="admin-stat-card">
+              <div class="admin-stat-card__label">Total Projects</div>
+              <div class="admin-stat-card__value" id="statProjects">0</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="admin-stat-card__label">Testimonials</div>
+              <div class="admin-stat-card__value" id="statTestimonials">0</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="admin-stat-card__label">Categories</div>
+              <div class="admin-stat-card__value" id="statCategories">0</div>
+            </div>
+          </div>
+          <div class="admin-panel">
+            <div class="admin-panel__header"><h2>Recent Projects</h2></div>
+            <div class="admin-panel__body"><table class="admin-table"><thead><tr><th>Image</th><th>Title</th><th>Category</th></tr></thead><tbody id="recentProjectsTable"></tbody></table></div>
+          </div>
+        </div>
+
+        <!-- Projects Tab -->
+        <div id="tab-projects" style="display:none;">
+          <div class="admin-panel">
+            <div class="admin-panel__header">
+              <h2>Portfolio Projects</h2>
+              <button class="btn btn--gold" onclick="openProjectModal()"><span>+ Add Project</span></button>
+            </div>
+            <div class="admin-panel__body">
+              <table class="admin-table">
+                <thead><tr><th>Image</th><th>Title</th><th>Category</th><th>Description</th><th>Actions</th></tr></thead>
+                <tbody id="projectsTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Testimonials Tab -->
+        <div id="tab-testimonials" style="display:none;">
+          <div class="admin-panel">
+            <div class="admin-panel__header">
+              <h2>Client Testimonials</h2>
+              <button class="btn btn--gold" onclick="openTestimonialModal()"><span>+ Add Testimonial</span></button>
+            </div>
+            <div class="admin-panel__body">
+              <table class="admin-table">
+                <thead><tr><th>Client</th><th>Location</th><th>Review</th><th>Rating</th><th>Actions</th></tr></thead>
+                <tbody id="testimonialsTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Project Modal -->
+  <div class="modal" id="projectModal">
+    <div class="modal__card">
+      <h2 id="projectModalTitle">Add New Project</h2>
+      <form class="modal__form" id="projectForm" onsubmit="saveProject(event)">
+        <input type="hidden" id="projectId">
+        <div><label for="projTitle">Project Title</label><input type="text" id="projTitle" placeholder="e.g. Modern Villa Kochi" required></div>
+        <div><label for="projCategory">Category</label>
+          <select id="projCategory" required>
+            <option value="living-room">Living Room</option>
+            <option value="kitchen">Kitchen</option>
+            <option value="bedroom">Bedroom</option>
+            <option value="exterior">Exterior</option>
+            <option value="bathroom">Bathroom</option>
+            <option value="office">Office</option>
+          </select>
+        </div>
+        <div><label for="projDesc">Description</label><textarea id="projDesc" placeholder="Brief description of the project..." required></textarea></div>
+        <div><label for="projImage">Image URL</label><input type="url" id="projImage" placeholder="https://images.unsplash.com/..." required oninput="previewImage(this.value,'projImgPreview')"><img class="img-preview" id="projImgPreview"></div>
+        <div><label for="projLocation">Location</label><input type="text" id="projLocation" placeholder="e.g. Ernakulam, Kerala"></div>
+        <div><label for="projYear">Year</label><input type="text" id="projYear" placeholder="e.g. 2026"></div>
+        <div class="modal__actions">
+          <button type="submit" class="btn btn--gold"><span>Save Project</span></button>
+          <button type="button" class="btn btn--ghost" onclick="closeModal('projectModal')"><span>Cancel</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Testimonial Modal -->
+  <div class="modal" id="testimonialModal">
+    <div class="modal__card">
+      <h2 id="testimonialModalTitle">Add New Testimonial</h2>
+      <form class="modal__form" id="testimonialForm" onsubmit="saveTestimonial(event)">
+        <input type="hidden" id="testimonialId">
+        <div><label for="testName">Client Name</label><input type="text" id="testName" placeholder="e.g. Anu & Rakesh" required></div>
+        <div><label for="testLocation">Location</label><input type="text" id="testLocation" placeholder="e.g. Kochi" required></div>
+        <div><label for="testText">Review</label><textarea id="testText" placeholder="What the client said about your work..." required></textarea></div>
+        <div><label for="testRating">Rating (1-5)</label>
+          <select id="testRating"><option value="5">★★★★★ (5)</option><option value="4">★★★★☆ (4)</option><option value="3">★★★☆☆ (3)</option></select>
+        </div>
+        <div class="modal__actions">
+          <button type="submit" class="btn btn--gold"><span>Save Testimonial</span></button>
+          <button type="button" class="btn btn--ghost" onclick="closeModal('testimonialModal')"><span>Cancel</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="./js/data.js"></script>
+  <script src="./js/admin.js"></script>
+</body>
+</html>

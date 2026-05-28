@@ -68,15 +68,18 @@ function initGsap() {
   });
 
   loader
-    .from(".site-header", { y: -24, opacity: 0, duration: .9 })
-    .from(".hero__media", { scale: 1.18, duration: 1.8 }, 0)
+    .from(".site-header", { y: -28, opacity: 0, duration: .9 })
+    .from(".nav a", { y: -20, opacity: 0, duration: .85, stagger: .05, ease: "power3.out" }, .1)
+    .from(".header-cta", { y: -16, opacity: 0, duration: .85, ease: "power3.out" }, .15)
+    .from(".hero__media img", { scale: 1.24, yPercent: 12, duration: 1.95 }, 0)
+    .from(".ticker__track span", { opacity: 0, y: 22, duration: 1.05, stagger: .05, ease: "power3.out" }, .15)
     .from(".hero .split-line > span", {
       yPercent: 112,
-      duration: 1.25,
+      duration: 1.2,
       stagger: .045
-    }, .2)
-    .from(".hero__bottom", { y: 28, opacity: 0, duration: .9 }, .85)
-    .from(".hero__stats span", { y: 22, opacity: 0, duration: .8, stagger: .08 }, 1);
+    }, .25)
+    .from(".hero__bottom", { y: 36, opacity: 0, duration: .85 }, .75)
+    .from(".hero__stats span", { y: 22, opacity: 0, duration: .75, stagger: .08 }, .95);
 
   gsap.to(".progress", {
     width: "100%",
@@ -102,6 +105,32 @@ function initGsap() {
     });
   });
 
+  gsap.to(".hero__media img", {
+    scale: 1.16,
+    yPercent: -8,
+    duration: 16,
+    ease: "sine.inOut",
+    repeat: -1,
+    yoyo: true
+  });
+
+  gsap.to(".statement__image img", {
+    scale: 1.14,
+    yPercent: 8,
+    duration: 18,
+    ease: "sine.inOut",
+    repeat: -1,
+    yoyo: true
+  });
+
+  gsap.to(".ticker__track", {
+    skewX: 1.2,
+    duration: 12,
+    ease: "sine.inOut",
+    repeat: -1,
+    yoyo: true
+  });
+
   document.querySelectorAll(".split-text:not(.hero__title):not(.eyebrow)").forEach((element) => {
     gsap.from(element.querySelectorAll(".split-line > span"), {
       yPercent: 108,
@@ -111,6 +140,19 @@ function initGsap() {
       scrollTrigger: {
         trigger: element,
         start: "top 82%"
+      }
+    });
+  });
+
+  gsap.utils.toArray(".section__kicker").forEach((element) => {
+    gsap.from(element, {
+      x: -24,
+      opacity: 0,
+      duration: .9,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: element,
+        start: "top 92%"
       }
     });
   });
@@ -129,9 +171,10 @@ function initGsap() {
   });
 
   gsap.utils.toArray("[data-animate='project']").forEach((card) => {
-      gsap.from(card, {
+    gsap.from(card, {
       y: 74,
-      clipPath: "inset(14% 0% 14% 0%)",
+      scale: .98,
+      rotateX: 3,
       opacity: 0,
       duration: 1.05,
       ease: "power4.out",
@@ -150,6 +193,56 @@ function initGsap() {
       start: "top bottom",
       end: "bottom top",
       scrub: true
+    }
+  });
+
+  gsap.utils.toArray(".footer span, .footer a").forEach((item) => {
+    gsap.from(item, {
+      y: 22,
+      opacity: 0,
+      duration: .75,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: ".footer",
+        start: "top 98%"
+      }
+    });
+  });
+
+  gsap.utils.toArray(".service-list article").forEach((card) => {
+    gsap.from(card, {
+      y: 46,
+      opacity: 0,
+      duration: 1.05,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: card,
+        start: "top 92%"
+      }
+    });
+  });
+
+  gsap.utils.toArray(".timeline article").forEach((item) => {
+    gsap.from(item, {
+      y: 42,
+      opacity: 0,
+      duration: .95,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: item,
+        start: "top 92%"
+      }
+    });
+  });
+
+  gsap.from(".contact__panel", {
+    y: 36,
+    opacity: 0,
+    duration: 1,
+    ease: "power4.out",
+    scrollTrigger: {
+      trigger: ".contact__panel",
+      start: "top 92%"
     }
   });
 
