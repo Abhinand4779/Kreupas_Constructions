@@ -37,12 +37,20 @@ function adminLogout() {
 }
 
 // Check auth on load
-window.addEventListener('load', checkAuth);
+window.addEventListener('load', () => {
+  checkAuth();
+  const menuToggle = document.getElementById('menuToggle');
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      document.getElementById('adminSidebar').classList.toggle('active');
+    });
+  }
+});
 
 // Tabs
 function switchTab(tabId, element) {
-  // Update sidebar active class
-  document.querySelectorAll('.admin-sidebar__nav a').forEach(a => a.classList.remove('active'));
+  // Update sidebar and mobile buttons active state
+  document.querySelectorAll('.admin-sidebar__nav a, .admin-tab-button').forEach(a => a.classList.remove('active'));
   if (element) element.classList.add('active');
   
   // Hide all tabs
@@ -187,6 +195,19 @@ function previewImage(url, imgId) {
   } else {
     img.classList.remove('show');
   }
+}
+
+function handleProjectFileUpload(event) {
+  const file = event.target.files[0];
+  const input = document.getElementById('projImage');
+  if (!file || !input) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    input.value = reader.result;
+    previewImage(reader.result, 'projImgPreview');
+  };
+  reader.readAsDataURL(file);
 }
 
 // ── CRUD Operations ──

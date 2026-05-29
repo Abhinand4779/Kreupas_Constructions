@@ -32,7 +32,7 @@
       <nav class="nav" id="mainNav" style="display:flex;">
         <a href="./index.html" target="_blank">View Site ↗</a>
       </nav>
-      <button class="menu-toggle" id="menuToggle" style="display:none;"><span></span><span></span><span></span></button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu"><span></span><span></span><span></span></button>
       <button class="btn btn--ghost" onclick="adminLogout()" style="font-size:13px;padding:8px 20px;border:1px solid rgba(255,255,255,.15);color:rgba(244,240,232,.7);"><span>Logout</span></button>
     </header>
 
@@ -57,6 +57,11 @@
 
       <!-- Main Content -->
       <main class="admin-main">
+        <div class="admin-mobile-tabs">
+          <button class="admin-tab-button active" onclick="switchTab('dashboard', this)">Dashboard</button>
+          <button class="admin-tab-button" onclick="switchTab('projects', this)">Projects</button>
+          <button class="admin-tab-button" onclick="switchTab('testimonials', this)">Testimonials</button>
+        </div>
         <!-- Dashboard Tab -->
         <div id="tab-dashboard">
           <h1 style="font-family:var(--serif);font-size:28px;margin-bottom:8px;">Welcome Back 👋</h1>
@@ -134,7 +139,16 @@
           </select>
         </div>
         <div><label for="projDesc">Description</label><textarea id="projDesc" placeholder="Brief description of the project..." required></textarea></div>
-        <div><label for="projImage">Image URL</label><input type="url" id="projImage" placeholder="https://images.unsplash.com/..." required oninput="previewImage(this.value,'projImgPreview')"><img class="img-preview" id="projImgPreview"></div>
+        <div>
+          <label for="projImage">Image URL</label>
+          <input type="url" id="projImage" placeholder="https://images.unsplash.com/..." required oninput="previewImage(this.value,'projImgPreview')">
+          <small class="input-note">Paste an image URL or upload a local file below to preview instantly.</small>
+          <img class="img-preview" id="projImgPreview">
+        </div>
+        <div>
+          <label for="projImageFile">Upload Image</label>
+          <input type="file" id="projImageFile" accept="image/*" onchange="handleProjectFileUpload(event)">
+        </div>
         <div><label for="projLocation">Location</label><input type="text" id="projLocation" placeholder="e.g. Ernakulam, Kerala"></div>
         <div><label for="projYear">Year</label><input type="text" id="projYear" placeholder="e.g. 2026"></div>
         <div class="modal__actions">

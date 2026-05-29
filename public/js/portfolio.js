@@ -5,10 +5,106 @@
 let allProjects = [];
 
 window.addEventListener('DOMContentLoaded', () => {
-  allProjects = getProjects();
+  // Load admin projects from localStorage
+  const stored = getProjects();
+
+  // Include recent works placed in /assets (added by user) as high-visibility featured items.
+  // If you add more assets, update this list or automate in a build step.
+  const assetImages = [
+    './assets/photo7.jpeg',
+    './assets/photo6.jpeg',
+    './assets/photo5.jpeg',
+    './assets/photo4.jpeg',
+    './assets/photo3.jpeg',
+    './assets/photo2.jpeg',
+    './assets/photo1.jpeg'
+  ];
+
+  const assetProjects = assetImages.map((src, idx) => ({
+    id: `asset-${idx}`,
+    title: 'Recent Work',
+    category: 'exterior',
+    description: 'Showcase of our recent work',
+    image: src,
+    location: 'Ernakulam',
+    year: new Date().getFullYear()
+  }));
+
+  // Merge assets first so they display prominently, then admin projects
+  allProjects = [...assetProjects, ...stored];
+
+  // Render a featured carousel for top recent works, then the full grid
+  renderCarousel(allProjects.slice(0, 4));
   renderPortfolio(allProjects);
   initFilters();
+  initCarousel();
 });
+
+function renderCarousel(items) {
+  const grid = document.querySelector('.portfolio-grid');
+  if (!grid) return;
+
+  let carousel = document.querySelector('.portfolio-carousel');
+  if (!carousel) {
+    carousel = document.createElement('section');
+    carousel.className = 'portfolio-carousel';
+    grid.parentNode.insertBefore(carousel, grid);
+  }
+
+  carousel.innerHTML = `
+    <div class="carousel-track">
+      ${items.map(p => `
+        <div class="carousel-slide" data-id="${p.id}">
+          <img src="${p.image}" alt="${p.title}">
+          <div class="carousel-caption">
+            <h3>${p.title}</h3>
+            <div class="carousel-meta">${p.location}, ${p.year}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <button class="carousel-prev" aria-label="Previous">&#10094;</button>
+    <button class="carousel-next" aria-label="Next">&#10095;</button>
+    <div class="carousel-indicators">
+      ${items.map((_,i) => `<button class="indicator ${i===0? 'active':''}" data-index="${i}"></button>`).join('')}
+    </div>
+  `;
+
+  // open lightbox when clicking a slide
+  carousel.querySelectorAll('.carousel-slide').forEach(s => s.addEventListener('click', () => openLightbox(s.dataset.id)));
+}
+
+function initCarousel() {
+  const carousel = document.querySelector('.portfolio-carousel');
+  if (!carousel) return;
+
+  const track = carousel.querySelector('.carousel-track');
+  const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+  const prev = carousel.querySelector('.carousel-prev');
+  const next = carousel.querySelector('.carousel-next');
+  const indicators = Array.from(carousel.querySelectorAll('.indicator'));
+
+  let index = 0;
+  function goTo(i) {
+    index = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(${ -index * 100 }%)`;
+    indicators.forEach((b,bi) => b.classList.toggle('active', bi === index));
+  }
+
+  prev.addEventListener('click', () => { goTo(index - 1); resetAutoplay(); });
+  next.addEventListener('click', () => { goTo(index + 1); resetAutoplay(); });
+  indicators.forEach(btn => btn.addEventListener('click', () => { goTo(Number(btn.dataset.index)); resetAutoplay(); }));
+
+  track.style.transition = 'transform .55s ease';
+  let autoplay = setInterval(() => goTo(index + 1), 4000);
+  function resetAutoplay() { clearInterval(autoplay); autoplay = setInterval(() => goTo(index + 1), 4000); }
+
+  carousel.addEventListener('mouseenter', () => clearInterval(autoplay));
+  carousel.addEventListener('mouseleave', () => resetAutoplay());
+
+  // initialize
+  goTo(0);
+}
 
 window.addEventListener('loaderFinished', () => {
   if (typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined") {
@@ -26,7 +122,7 @@ function renderPortfolio(projectsToRender) {
   }
 
   container.innerHTML = projectsToRender.map((p, i) => `
-    <article class="portfolio-item" onclick="openLightbox('${p.id}')">
+    <article class="portfolio-item ${i < 4 ? 'featured' : ''}" onclick="openLightbox('${p.id}')">
       <img src="${p.image}" alt="${p.title}">
       <div class="portfolio-item__overlay">
         <div class="portfolio-item__category">${formatCategory(p.category)}</div>

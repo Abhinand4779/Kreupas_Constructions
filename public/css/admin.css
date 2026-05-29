@@ -48,8 +48,30 @@
   color: var(--paper); background: rgba(255,255,255,.04);
   border-left-color: var(--gold);
 }
+.menu-toggle {
+  display: none;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  background: transparent;
+  color: #fff;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.menu-toggle span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  margin: 4px 0;
+  transition: transform .3s ease;
+}
 .admin-sidebar__nav a svg { width: 18px; height: 18px; opacity: .7; }
 @media (max-width: 900px) {
+  .menu-toggle { display: inline-flex; margin-left: 16px; }
   .admin-sidebar { display: none; }
   .admin-sidebar.active { display: block; position: fixed; top: 74px; left: 0; bottom: 0; width: 260px; z-index: 50; background: #0f1215; }
 }
@@ -67,6 +89,42 @@
 .admin-stat-card__label { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: rgba(244,240,232,.4); margin-bottom: 8px; }
 .admin-stat-card__value { font-family: var(--serif); font-size: 36px; color: var(--gold); }
 @media (max-width: 768px) { .admin-stats { grid-template-columns: 1fr; } }
+
+.admin-mobile-tabs {
+  display: none;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.admin-mobile-tabs .admin-tab-button {
+  flex: 1 1 auto;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  background: rgba(255,255,255,.04);
+  color: #e4e0d8;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.admin-mobile-tabs .admin-tab-button.active,
+.admin-mobile-tabs .admin-tab-button:hover {
+  background: rgba(212,167,106,.15);
+  border-color: rgba(212,167,106,.35);
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .admin-mobile-tabs { display: flex; }
+  .admin-main { padding: 24px 18px 32px; }
+  .admin-panel__header { flex-direction: column; align-items: stretch; gap: 16px; }
+  .admin-panel__header button { width: 100%; }
+  .admin-panel__body { padding: 18px; }
+  .admin-panel { margin-bottom: 24px; }
+  .modal__card { width: min(100vw, 95vw); }
+  .modal__actions { flex-direction: column; }
+  .modal__actions .btn { width: 100%; }
+}
 
 /* ── Panel / Table ── */
 .admin-panel {
@@ -128,6 +186,12 @@
 .modal__form input:focus, .modal__form textarea:focus, .modal__form select:focus { border-color: var(--gold); }
 .modal__form textarea { min-height: 100px; resize: vertical; }
 .modal__form select option { background: #1a1e24; }
+.modal__form input[type="file"] {
+  padding: 10px 14px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1);
+}
+.input-note { display: block; margin-top: 6px; font-size: 12px; color: rgba(244,240,232,.45); }
 .modal__actions { display: flex; gap: 12px; margin-top: 8px; }
 .modal__actions .btn { flex: 1; justify-content: center; }
 
