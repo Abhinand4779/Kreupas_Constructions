@@ -65,6 +65,8 @@ ul, ol { list-style: none; }
 .page-loader {
   position: fixed; inset: 0; z-index: 9999;
   display: flex; align-items: center; justify-content: center;
+  min-height: 100vh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   background: #0d1114;
   transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
 }
@@ -74,9 +76,15 @@ ul, ol { list-style: none; }
 .page-loader.hidden {
   display: none;
 }
-.loader-svg { width: 1400px; height: 200px; max-width: 95vw; }
+.loader-svg {
+  width: min(95vw, 1400px);
+  max-width: 95vw;
+  height: auto;
+  max-height: 75vh;
+  display: block;
+}
 .loader-text {
-  font-family: var(--loader-font); font-size: 72px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  font-family: var(--loader-font); font-size: clamp(42px, 5.5vw, 72px); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
   fill: var(--loader-color);
   stroke-dasharray: 2500; stroke-dashoffset: 2500;
 }
